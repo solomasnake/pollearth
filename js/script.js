@@ -1,4 +1,26 @@
 $(document).ready(function() {
+
+
+// текущая дата
+var now = new Date();       
+// дата предстоящего события (год, месяц, число)
+var eventDate = new Date(2014,7,31);
+var span = document.getElementById('timer');
+span = span.getElementsByTagName('li');
+// если событие еще не наступило
+if(now < eventDate){
+   window.setInterval(function(){ 
+   	  span[0].getElementsByTagName('span')[0].innerHTML = timeToEventDays(eventDate); 
+   	  span[0].setAttribute('data-percent',Math.round(timeToEventDays(eventDate)*100/60));
+   	  span[1].getElementsByTagName('span')[0].innerHTML = timeToEventHours(eventDate); 
+   	  span[1].setAttribute('data-percent',Math.round(timeToEventHours(eventDate)*100/60));
+   	  span[2].getElementsByTagName('span')[0].innerHTML = timeToEventMin(eventDate); 
+   	  span[2].setAttribute('data-percent',Math.round(timeToEventMin(eventDate)*100/60));
+   	  span[3].getElementsByTagName('span')[0].innerHTML = timeToEventSec(eventDate);       
+   	  span[3].setAttribute('data-percent',Math.round(timeToEventSec(eventDate)*100/60));
+    },1000);           
+}     
+
 /**!
  * easyPieChart
  * Lightweight plugin to render simple, animated and retina optimized pie charts
@@ -22,5 +44,46 @@ var charts = [];
 [].forEach.call(document.querySelectorAll('.chart'), function(el) {
   charts.push(new EasyPieChart(el, options));
 });
-		
+
 });
+
+function timeToEventDays(eventDate)
+  {
+      var now = new Date();     
+
+     // количество дней до события
+     var daystoED = Math.floor(Math.round(eventDate-now)/86400000);
+     daystoED = (daystoED < 1) ? "0"+daystoED : daystoED;
+
+   return daystoED;
+}
+ function timeToEventHours(eventDate)
+  {
+      var now = new Date();
+
+     // количество часов до события
+     var hourstoED = 24 - now.getHours() - 1;
+       hourstoED = (hourstoED < 10) ? "0"+hourstoED : hourstoED;
+     
+   return hourstoED;
+}
+ function timeToEventMin(eventDate)
+  {
+      var now = new Date();
+
+     // количество минут до события
+     var minutestoED = 60 - now.getMinutes() - 1;
+         minutestoED = (minutestoED < 10) ? "0"+minutestoED : minutestoED;
+
+   return minutestoED;
+}
+ function timeToEventSec(eventDate)
+  {
+      var now = new Date();
+
+     // количество секунд до события
+     var secondstoED = 60 - now.getSeconds() - 1;
+     secondstoED = (secondstoED < 10) ? "0"+secondstoED : secondstoED;       
+     
+   return secondstoED;
+}
